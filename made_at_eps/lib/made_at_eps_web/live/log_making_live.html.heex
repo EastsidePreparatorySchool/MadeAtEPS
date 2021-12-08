@@ -1,0 +1,25 @@
+log making template
+<form id="basic-uploads-form" phx-change="validate" phx-submit="save">
+<section phx-drop-target={@uploads.photo.ref}>
+.
+<br>
+.
+<br>
+<%=for entry <- @uploads.photo.entries do %>
+  <article class="upload-entry">
+    <figure>
+      <%= live_img_preview entry %>
+      <figcaption><%= entry.client_name%></figcaption>
+    </figure>
+    <progress value={entry.progress} max="100"> <%= entry.progress %>%</progress>
+    <button phx-click="cancel-upload" phx-value-ref={entry.ref} aria-label="cancel">&times;</button>
+
+    <%= for err <- upload_errors(@uploads.photo, entry) do %>
+      <p class="alert alert-danger"><%= error_to_string(err) %><p>
+    <% end %>
+  </article>
+<% end %>
+</section>
+ <%= live_file_input @uploads.photo %>
+<button type="submit" phx-disable-with="Uploading...">Upload</button>
+ </form>
